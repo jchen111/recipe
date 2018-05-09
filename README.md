@@ -49,4 +49,3 @@ Generate a release build in `dist`:
 ```sh
 $ npm run build
 ```
->>>>>>> initial commit

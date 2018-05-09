@@ -33,7 +33,8 @@ class EdamamService {
         title: entry.recipe.label,
         source_url: entry.recipe.url,
         publisher: entry.recipe.source,
-        publisher_url: entry.recipe.url
+        publisher_url: entry.recipe.url,
+        saved: false
       });
     })
     return recipes;

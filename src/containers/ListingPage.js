@@ -6,7 +6,7 @@ import { Values } from "redux-form-website-template";
 import * as listingActions from '../actions/listingsActions';
 import * as listingsSelectors from '../reducers/listings';
 import wrapActionCreators from '../utils/wrapActionCreators';
-import loaderStyle from '../style/loader.scss';
+import topBarStyle from '../style/topbar.scss';
 import autoBind from 'react-autobind';
 
 @connect(state => ({
@@ -23,9 +23,13 @@ export default class ListingPage extends Component {
   }
 
   render() {
+    const count = this.props.listings.savedListingEntries.length;
     return (
       <div>
-        <SearchForm onSubmit={this.submit}/>
+        <div className={topBarStyle.container}>
+          <SearchForm onSubmit={this.submit}/>
+          <button className={topBarStyle.favorites}>Added {count} favorites</button>
+        </div>
         <GridView listings={this.props.listings}/>
       </div>
     );

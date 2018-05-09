@@ -18,25 +18,16 @@ export default class GridView extends Component {
     autoBind(this);
   }
 
-  componentDidMount() {
-    this.props.fetchListings();
-  }
-
   renderLoading() {
     return (
       <div className={loaderStyle.loader}><span></span></div>
     );
   }
 
-  renderEmpty() {
-    return (
-      <div className={styles.empty}><h2>Oops...we don&apos;t have any recipes for it yet.</h2></div>
-    );
-  }
-
   render() {
-    const { listingEntries, numberOfPageToLoad, searchQuery } = this.props.listings;
-    if(searchQuery != null && listingEntries == null) {
+    const { listingEntries, nextPageToLoad, searchQuery, isEnd } = this.props.listings;
+    const lastPost = {nextPageToLoad, searchQuery, isEnd};
+    if(listingEntries == null) {
       this.props.fetchListings();
     }
 
@@ -44,22 +35,18 @@ export default class GridView extends Component {
       return this.renderLoading();
     }
 
-    if(listingEntries.length == 0) {
-      return this.renderEmpty();
-    }
-
     return (
       <div className={styles.gridContainer}>
         {
           listingEntries.map((listing) => {
             let listingEntry = {
-              ...listing,
-              key: listing.recipe_id
+              ...listing
             };
-            return (<GridItem {...listingEntry}/>);
+            let post = {listing, isEnd, key: listing.image_url};
+            return (<GridItem {...post} key={listing.image_url}/>);
           })
         }
-        <GridItem nextPageToLoad={numberOfPageToLoad} searchQuery={searchQuery}/>
+        <GridItem {...lastPost}/>
       </div>
     );
   }

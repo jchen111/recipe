@@ -28,26 +28,40 @@ export default class GridItem extends Component {
     this.props.fetchListings();
   }
 
+  saveListing() {
+    this.props.saveListing(this.props.listing);
+  }
+
   render() {
-    const { f2f_url, image_url, publisher, publisher_url, recipe_id, social_rank, source_url, title, nextPageToLoad, searchQuery } = this.props;
-    if(nextPageToLoad != null) {
+    const { listing, nextPageToLoad, searchQuery, isEnd } = this.props;
+    const saveStatusLabel = listing != null && listing.saved ? 'Saved' : 'Save it!';
+    if(isEnd && listing == null) {
       return (
         <div className={ styles.gridItem }>
           <div className={styles.info}>
-            <label className={styles.more} onClick={this.loadMore}>See more recipes for {searchQuery}...</label>
+            <label className={styles.more}>Sorry, no more results for {searchQuery}</label>
           </div>
         </div>
       );
-    } else {
+    } else if(listing != null && listing.image_url != null) {
       return (
         <div
-          className={ this.getGridItemType(title.length) }>
-          <a href={source_url}><img src={image_url} onLoad={this.onImageLoad}/></a>
+          className={ this.getGridItemType(listing.title.length) }>
+          <a href={listing.source_url}><img src={listing.image_url}/></a>
           <div className={styles.info}>
-            <label>{title}</label>
+            <label>{listing.title}</label>
+            <button className={styles.saveButton} onClick={this.saveListing}>{saveStatusLabel}</button>
           </div>
         </div>
       );
+   } else {
+     return (
+       <div className={ styles.gridItem }>
+         <div className={styles.info}>
+           <label className={styles.more} onClick={this.loadMore}>See more recipes for {searchQuery}...</label>
+         </div>
+       </div>
+     );
    }
   }
 }

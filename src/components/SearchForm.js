@@ -17,21 +17,18 @@ class SearchForm extends React.Component {
 
   render() {
     const {handleSubmit} = this.props;
-
     return (
-      <div className={styles.searchBar}>
-        <form onSubmit={handleSubmit} className={styles.searchForm}>
-          <div>
-            <Field
-              name="textSearchQuery"
-              component="input"
-              type="search"
-              placeholder="Search for recipes..."
-            />
-            <button type="submit" className={styles.searchButton}>Search</button>
-          </div>
-        </form>
-      </div>
+      <form onSubmit={handleSubmit} className={styles.searchForm}>
+        <div>
+          <Field
+            name="textSearchQuery"
+            component="input"
+            type="search"
+            placeholder="Search for recipes..."
+          />
+          <button type="submit" className={styles.searchButton}>Search</button>
+        </div>
+      </form>
     );
   }
 }

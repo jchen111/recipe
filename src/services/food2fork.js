@@ -33,7 +33,8 @@ class Food2ForkService {
         title: recipe.title,
         source_url: recipe.source_url,
         publisher: recipe.publisher,
-        publisher_url: recipe.f2f_url
+        publisher_url: recipe.f2f_url,
+        saved: false
       });
     })
     return recipes;

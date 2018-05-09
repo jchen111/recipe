@@ -13,15 +13,21 @@ export function fetchListings() {
     try {
       const state = getState();
       let searchQuery = state.form.SearchForm.values != null ? state.form.SearchForm.values.textSearchQuery: null;
+      let entries = [];
       let food2forkListingEntries = [];
       let edamamListingEntries = [];
+      let isEnd = false;
       if(searchQuery != null) {
-        food2forkListingEntries = await food2ForkService.getRecipesByQuery(searchQuery, 'r', state.listings.numberOfPageToLoad);
-        edamamListingEntries = await edamamService.getRecipesByQuery(searchQuery, null, state.listings.numberOfPageToLoad);
+        food2forkListingEntries = await food2ForkService.getRecipesByQuery(searchQuery, 'r', state.listings.nextPageToLoad);
+        edamamListingEntries = await edamamService.getRecipesByQuery(searchQuery, null, state.listings.nextPageToLoad);
       } else {
-        food2forkListingEntries = await food2ForkService.getRecipesByQuery(searchQuery, 'r', state.listings.numberOfPageToLoad);
+        food2forkListingEntries = await food2ForkService.getRecipesByQuery(searchQuery, 'r', state.listings.nextPageToLoad);
       }
-      dispatch({ type: actionTypes.LISTINGS_FETCHED, newstate: { listingEntries: [...food2forkListingEntries, ...edamamListingEntries], searchQuery }});
+      entries = [...food2forkListingEntries, ...edamamListingEntries];
+      if(entries.length == 0) {
+        isEnd = true;
+      }
+      dispatch({ type: actionTypes.LISTINGS_FETCHED, newstate: { listingEntries: entries, searchQuery, isEnd }});
     } catch (error) {
       console.error(error);
     }
@@ -32,6 +38,24 @@ export function refetchListingsOnQuerySubmit(textSearchQuery) {
   return async(dispatch, getState) => {
     try {
       dispatch({ type: actionTypes.SEARCH_QUERY_SUBMITTED, newstate: {searchQuery: textSearchQuery} });
+    } catch(error) {
+      console.error(error);
+    }
+  }
+}
+
+export function saveListing(listingEntry) {
+  return async(dispatch, getState) => {
+    try {
+      const state = getState();
+      if(state.listings.savedListingEntries.find(l => l.image_url == listingEntry.image_url) == null) {
+        let index = state.listings.listingEntries.findIndex(x => x.image_url == listingEntry.image_url);
+        let newEntry = {
+          ...state.listings.listingEntries[index]
+        };
+        newEntry.saved = true;
+        dispatch({ type: actionTypes.SAVE_LISTING, newstate: {listingEntries: [...state.listings.listingEntries.slice(0,index), newEntry, ...state.listings.listingEntries.slice(index + 1, state.listings.listingEntries.length)], savedListingEntries: [...state.listings.savedListingEntries, listingEntry]} });
+      }
     } catch(error) {
       console.error(error);
     }
