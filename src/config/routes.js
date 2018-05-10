@@ -4,14 +4,14 @@ import {
     Route
 } from 'react-router-dom';
 import ListingPage from '../containers/ListingPage';
-import ProductDetailPage from '../containers/ProductDetailPage';
+import FavoritesPage from '../containers/FavoritesPage';
 import NotFoundPage from '../containers/NotFoundPage';
 
 export default (
   <HashRouter>
     <div>
       <Route exact path="/" component={ListingPage} />
-      <Route path="/product-detail/:title" component={ProductDetailPage} />
+      <Route path="/favorites" component={FavoritesPage} />
     </div>
   </HashRouter>
 );

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
-import PropTypes from 'prop-types';
 import cssModules from 'react-css-modules';
 import * as listingActions from '../actions/listingsActions';
 import _ from 'lodash';

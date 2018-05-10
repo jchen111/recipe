@@ -3,10 +3,8 @@ import cssModules from 'react-css-modules';
 import styles from '../style/searchBar.scss';
 import autoBind from 'react-autobind';
 import * as listingActions from '../actions/listingsActions';
-import { connect } from 'react-redux';
 import wrapActionCreators from '../utils/wrapActionCreators';
 import { Field, reduxForm } from 'redux-form';
-import MdSearch from 'react-icons/lib/md/search';
 
 @cssModules(styles)
 class SearchForm extends React.Component {

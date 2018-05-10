@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
-import PropTypes from 'prop-types';
 import cssModules from 'react-css-modules';
 import styles from '../style/grid.scss'
 import * as listingActions from '../actions/listingsActions';
@@ -17,7 +16,7 @@ export default class GridItem extends Component {
   }
 
   getGridItemType(size) {
-    const tallGridItemTypeThreshold = 80;
+    const tallGridItemTypeThreshold = 50;
     if(size > tallGridItemTypeThreshold) {
       return styles.tallGridItem;
     }
@@ -32,6 +31,10 @@ export default class GridItem extends Component {
     this.props.saveListing(this.props.listing);
   }
 
+  unSaveListing() {
+    this.props.unSaveListing(this.props.listing);
+  }
+
   render() {
     const { listing, nextPageToLoad, searchQuery, isEnd } = this.props;
     const saveStatusLabel = listing != null && listing.saved ? 'Saved' : 'Save it!';
@@ -44,16 +47,30 @@ export default class GridItem extends Component {
         </div>
       );
     } else if(listing != null && listing.image_url != null) {
-      return (
-        <div
-          className={ this.getGridItemType(listing.title.length) }>
-          <a href={listing.source_url}><img src={listing.image_url}/></a>
-          <div className={styles.info}>
-            <label>{listing.title}</label>
-            <button className={styles.saveButton} onClick={this.saveListing}>{saveStatusLabel}</button>
+      if(listing.saved) {
+        return (
+          <div
+            className={ this.getGridItemType(listing.title.length) }>
+            <a href={listing.source_url}><img src={listing.image_url}/></a>
+            <div className={styles.info}>
+              <label>{listing.title}</label>
+              <button className={styles.saveButton} onClick={this.saveListing}>{saveStatusLabel}</button>
+              <button className={styles.removeButton} onClick={this.unSaveListing}>remove</button>
+            </div>
           </div>
-        </div>
-      );
+        );
+      } else {
+        return (
+          <div
+            className={ this.getGridItemType(listing.title.length) }>
+            <a href={listing.source_url}><img src={listing.image_url}/></a>
+            <div className={styles.info}>
+              <label>{listing.title}</label>
+              <button className={styles.saveButton} onClick={this.saveListing}>{saveStatusLabel}</button>
+            </div>
+          </div>
+        );
+      }
    } else {
      return (
        <div className={ styles.gridItem }>
