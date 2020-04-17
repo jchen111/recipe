@@ -13,12 +13,13 @@ export function fetchListings() {
       let food2forkListingEntries = [];
       let edamamListingEntries = [];
       let isEnd = false;
-      if(searchQuery != null) {
-        food2forkListingEntries = await food2ForkService.getRecipesByQuery(searchQuery, 'r', state.listings.nextPageToLoad);
-        edamamListingEntries = await edamamService.getRecipesByQuery(searchQuery, null, state.listings.nextPageToLoad);
-      } else {
-        food2forkListingEntries = await food2ForkService.getRecipesByQuery(searchQuery, 'r', state.listings.nextPageToLoad);
-      }
+      // if(searchQuery != null) {
+      //   food2forkListingEntries = await food2ForkService.getRecipesByQuery(searchQuery, 'r', state.listings.nextPageToLoad);
+      //   edamamListingEntries = await edamamService.getRecipesByQuery(searchQuery, null, state.listings.nextPageToLoad);
+      // } else {
+      //   food2forkListingEntries = await food2ForkService.getRecipesByQuery(searchQuery, 'r', state.listings.nextPageToLoad);
+      // }
+      edamamListingEntries = await edamamService.getRecipesByQuery(searchQuery, null, state.listings.nextPageToLoad);
       entries = [...food2forkListingEntries, ...edamamListingEntries];
       if(entries.length == 0) {
         isEnd = true;
